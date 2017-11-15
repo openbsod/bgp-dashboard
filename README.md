@@ -1,4 +1,4 @@
-BGP Dashboard
+BGP Dashboard-  fork of Richard Hicks repo ( without Docker addiction )
 =============
 
 A "realtime" web view of your BGP network
@@ -13,26 +13,26 @@ A "realtime" web view of your BGP network
 
 How it works
 ---------
-> This is beta code.
+
 - BGP peering session using GoBGP
 - GoBGP pipes BGP information into MongoDB
 - Flask App queries MongoDB to build website and JSON API
 
-###### This project uses three Docker containers
-- GoBGP ([osrg/gobgp](https://hub.docker.com/r/osrg/gobgp/))
-- MongoDB ([mongo](https://hub.docker.com/_/mongo/))
-- Flask ([docker-flask](https://hub.docker.com/r/p0bailey/docker-flask/))
+###### Dependencies
+- GoBGP [osrg/gobgp](https://github.com/osrg/gobgp)
+- MongoDB [mongo](https://www.mongodb.com)
+- Flask ([flask](http://flask.pocoo.org)
 
 ###### GoBGP
 The GoBGP container serves two functions:
 - Peer with the "real" network
-  - Configure [gobgpd.conf](https://github.com/rhicks/bgp-dash/blob/master/gobgp/gobgpd.conf) to peer with the real network.
+  - Configure [gobgpd.conf](https://github.com/openbsod/bgp-dashboard/blob/master/gobgp/gobgpd.conf) to peer with the real network.
   - Only IPv4-Unicast and IPv6-Unicast supported at this time.
 - Pass BGP updates into BGP
-  - The [bgp-mongo-bulk-load.py](https://github.com/rhicks/bgp-dash/blob/master/bgp-mongo-bulk-load.py) script pipes the JSON updates from GoBGP into the MongoDB container
+  - The [bgp-mongo-bulk-load.py](https://github.com/openbsod/bgp-dashboard/blob/master/bgp-mongo-bulk-load.py) script pipes the JSON updates from GoBGP into the MongoDB
 
 ###### MongoDB
-- Mongo receives JSON updates from the GoBGP container
+- Mongo receives JSON updates from the GoBGP
 - The Flask App queries Mongo for relevant information
 
 ###### Flask
@@ -48,15 +48,10 @@ Screenshot
 Install
 ---------
 ```
-$ git clone https://github.com/rhicks/bgp-dashboard.git
+$ git clone https://github.com/openbsod/bgp-dashboard.git
 $ cd bgp-dashboard
-$ # modify ./gobgp/gobgpd.conf to peer with your network
+$ # modify /etc/gobgp/gobgpd.conf to peer with your network
 $ # modify ./flask/app/hello.py globals to support your network BGP communities
-$ docker-compose build
-$ docker-compose up (watch the log to verify BGP peeering is established)
 ```
 
 
-Todo
----------
-- ???
